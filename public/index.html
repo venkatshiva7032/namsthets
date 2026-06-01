@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Namasthe Telangana CRM</title>
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Premium Custom Styling -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- CDNs for Icons & Charts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-box">
+          <i data-lucide="layers" class="logo-icon"></i>
+          <span>NT CRM</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="kanban">
+          <i data-lucide="kanban"></i>
+          <span>Deals Board</span>
+        </button>
+        <button class="nav-item" data-tab="leads">
+          <i data-lucide="users"></i>
+          <span>Leads Directory</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">NT</div>
+          <div class="user-info">
+            <span class="user-name">Vikas Shivhare</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Action Bar -->
+      <header class="top-bar">
+        <div class="welcome-section">
+          <h1 id="page-title">Executive Dashboard</h1>
+          <p class="subtitle" id="page-subtitle">Real-time performance metrics and lead acquisition pipeline</p>
+        </div>
+        
+        <div class="top-bar-actions">
+          <button class="btn btn-primary btn-with-icon" id="btn-add-lead-top">
+            <i data-lucide="plus"></i>
+            <span>Add New Lead</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: DASHBOARD VIEW -->
+      <section class="tab-content active" id="tab-dashboard">
+        <!-- KPI Cards Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card glass">
+            <div class="kpi-icon-wrapper blue">
+              <i data-lucide="users"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Total CRM Leads</span>
+              <h2 class="kpi-val" id="stat-total-leads">0</h2>
+            </div>
+          </div>
+
+          <div class="kpi-card glass">
+            <div class="kpi-icon-wrapper orange">
+              <i data-lucide="activity"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Active Prospects</span>
+              <h2 class="kpi-val" id="stat-active-leads">0</h2>
+            </div>
+          </div>
+
+          <div class="kpi-card glass">
+            <div class="kpi-icon-wrapper green">
+              <i data-lucide="award"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Deals Closed Won</span>
+              <h2 class="kpi-val" id="stat-closed-won">0</h2>
+            </div>
+          </div>
+
+          <div class="kpi-card glass">
+            <div class="kpi-icon-wrapper red">
+              <i data-lucide="calendar"></i>
+            </div>
+            <div class="kpi-data">
+              <span class="kpi-label">Follow-ups Today</span>
+              <h2 class="kpi-val" id="stat-followups-today">0</h2>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts and Details Grid -->
+        <div class="dashboard-charts-grid">
+          <!-- Chart 1: Pipeline Breakdown -->
+          <div class="chart-card glass">
+            <div class="card-header">
+              <h3>Pipeline Stage Distribution</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="pipelineChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Services / Sources Distribution -->
+          <div class="chart-card glass">
+            <div class="card-header">
+              <h3>Lead Priority Breakdown</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="priorityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lower Grid: Follow-ups Agenda & Recent Activity -->
+        <div class="dashboard-details-grid">
+          <!-- Agenda Widget -->
+          <div class="details-card glass">
+            <div class="card-header">
+              <h3>Follow-up Schedule (Today)</h3>
+            </div>
+            <div class="agenda-list" id="dashboard-agenda-list">
+              <div class="loading-placeholder">Loading today's follow-up calendar...</div>
+            </div>
+          </div>
+
+          <!-- Activity log Widget -->
+          <div class="details-card glass">
+            <div class="card-header">
+              <h3>Active Operations Monitor</h3>
+            </div>
+            <div class="operations-list" id="dashboard-operations-list">
+              <!-- Dynamically populated -->
+              <div class="loading-placeholder">Monitoring database activity stream...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: KANBAN BOARD VIEW -->
+      <section class="tab-content" id="tab-kanban">
+        <div class="kanban-wrapper">
+          <div class="kanban-board" id="kanban-board-container">
+            <!-- Dynamically populated with columns -->
+            <div class="loading-placeholder">Assembling deals board...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: LEADS DIRECTORY TABLE VIEW -->
+      <section class="tab-content" id="tab-leads">
+        <!-- Filter and Search Bar -->
+        <div class="directory-control-bar glass">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="leads-search-input" placeholder="Search leads by name, email, company, enquiry...">
+          </div>
+          
+          <div class="filters-group">
+            <select id="filter-stage" class="form-select">
+              <option value="">All Stages</option>
+              <!-- Populate dynamically -->
+            </select>
+            <select id="filter-service" class="form-select">
+              <option value="">All Services</option>
+              <!-- Populate dynamically -->
+            </select>
+            <select id="filter-priority" class="form-select">
+              <option value="">All Priorities</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+            <div class="checkbox-container">
+              <input type="checkbox" id="filter-followup-today">
+              <label for="filter-followup-today">Due Today Only</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card glass">
+          <div class="table-wrapper">
+            <table class="leads-table">
+              <thead>
+                <tr>
+                  <th class="sortable" data-sort="name">Lead Details <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="company">Company <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="serviceType">Service <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="priority">Priority <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="dealStage">Deal Stage <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="followUpDate">Follow-up <i data-lucide="chevrons-up-down" class="sort-icon"></i></th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-body">
+                <tr>
+                  <td colspan="7" class="loading-row">Fetching pipeline directory...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Bar -->
+          <div class="pagination-bar">
+            <span class="pagination-info" id="pagination-info-text">Showing 0 to 0 of 0 leads</span>
+            <div class="pagination-buttons">
+              <button class="btn btn-outline btn-sm" id="btn-prev-page" disabled>Previous</button>
+              <span class="page-number active" id="current-page-num">1</span>
+              <button class="btn btn-outline btn-sm" id="btn-next-page" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- MODAL: ADD / EDIT LEAD -->
+    <div class="modal-backdrop" id="modal-lead-form">
+      <div class="modal glass">
+        <div class="modal-header">
+          <h2 id="lead-modal-title">Create New Lead</h2>
+          <button class="btn-close" id="btn-close-form-modal">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        
+        <form id="lead-edit-form" class="modal-body">
+          <input type="hidden" id="form-lead-id">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-name" class="required">Lead Name</label>
+              <input type="text" id="form-name" required placeholder="e.g., Jane Doe">
+            </div>
+            <div class="form-group">
+              <label for="form-company">Company</label>
+              <input type="text" id="form-company" placeholder="e.g., Tech Corp">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-email" class="required">Email Address</label>
+              <input type="email" id="form-email" required placeholder="e.g., jane@company.com">
+            </div>
+            <div class="form-group">
+              <label for="form-phone">Phone Number</label>
+              <input type="text" id="form-phone" placeholder="e.g., +1 (555) 019-2834">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-service">Service Requested</label>
+              <select id="form-service" class="form-select">
+                <!-- Populate dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="form-priority">Priority Level</label>
+              <select id="form-priority" class="form-select">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-stage">Deal Stage</label>
+              <select id="form-stage" class="form-select">
+                <!-- Populate dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="form-source">Lead Source</label>
+              <input type="text" id="form-source" placeholder="e.g., Google Search, Referral">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-timeline">Purchase Timeline</label>
+              <select id="form-timeline" class="form-select">
+                <!-- Populate dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="form-followup">Follow-up Date</label>
+              <input type="date" id="form-followup">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-enquiry">Detailed Requirement / Enquiry</label>
+            <textarea id="form-enquiry" rows="3" placeholder="Specify any additional information or client requirements..."></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="btn-cancel-form-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Prospect</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: LEAD DETAIL / ACTIVITY LOG MONITOR -->
+    <div class="modal-backdrop" id="modal-lead-detail">
+      <div class="modal modal-lg glass">
+        <div class="modal-header">
+          <div class="detail-title-block">
+            <h2 id="detail-lead-name">Rajesh Kumar</h2>
+            <span class="badge priority-badge" id="detail-lead-priority">High Priority</span>
+            <span class="badge stage-badge" id="detail-lead-stage">Qualified</span>
+          </div>
+          <button class="btn-close" id="btn-close-detail-modal">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+
+        <div class="modal-body detail-grid">
+          <!-- Left: Information Cards -->
+          <div class="detail-info-pane">
+            <div class="info-section">
+              <h3>Contact Details</h3>
+              <div class="info-item">
+                <i data-lucide="briefcase"></i>
+                <div>
+                  <span class="info-label">Company</span>
+                  <span class="info-val" id="detail-company">TechSolutions</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <i data-lucide="mail"></i>
+                <div>
+                  <span class="info-label">Email</span>
+                  <a href="" class="info-val link" id="detail-email">rajesh@techsolutions.com</a>
+                </div>
+              </div>
+              <div class="info-item">
+                <i data-lucide="phone"></i>
+                <div>
+                  <span class="info-label">Phone</span>
+                  <span class="info-val" id="detail-phone">+91 98765 43210</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-section">
+              <h3>Lead Context</h3>
+              <div class="info-item">
+                <i data-lucide="git-branch"></i>
+                <div>
+                  <span class="info-label">Service Type</span>
+                  <span class="info-val" id="detail-service">Consulting</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <i data-lucide="globe"></i>
+                <div>
+                  <span class="info-label">Source</span>
+                  <span class="info-val" id="detail-source">LinkedIn Outreach</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <i data-lucide="clock"></i>
+                <div>
+                  <span class="info-label">Timeline</span>
+                  <span class="info-val" id="detail-timeline">This Week</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <i data-lucide="calendar-check"></i>
+                <div>
+                  <span class="info-label">Follow-up Due</span>
+                  <span class="info-val" id="detail-followup">June 5, 2026</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-section">
+              <h3>Requirements Statement</h3>
+              <p class="enquiry-text-block" id="detail-enquiry">
+                Client is looking for backend system performance scaling and architecture reviews.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Operation Timeline Logs & Custom Actions -->
+          <div class="detail-timeline-pane">
+            <div class="pane-header">
+              <h3>Operational Activity Timeline</h3>
+            </div>
+            
+            <!-- Quick Add Note Form -->
+            <form id="add-note-form" class="inline-note-form">
+              <input type="text" id="form-note-text" required placeholder="Log a custom timeline note or update...">
+              <button type="submit" class="btn btn-primary btn-sm">Add Note</button>
+            </form>
+
+            <div class="timeline-trail" id="detail-activity-log">
+              <!-- Dynamically populated activity trail -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
